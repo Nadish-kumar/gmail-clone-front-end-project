@@ -9,7 +9,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/mailcontent" element={<Mailcontent />} />
+          <Route path="/mailcontent/:mailid" element={<Mailcontent />} />
         </Routes>
       </BrowserRouter>
     </div>

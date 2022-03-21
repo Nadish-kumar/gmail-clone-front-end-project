@@ -26,8 +26,31 @@ import PrintIcon from "@material-ui/icons/Print";
 import ScreenShareIcon from "@material-ui/icons/ScreenShare";
 import ReplyIcon from "@material-ui/icons/Reply";
 import ForwardIcon from "@material-ui/icons/Forward";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Mailcontent = () => {
+  const params = useParams();
+  const [setsinglemail, setsetsinglemail] = useState([]);
+  useEffect(() => {
+    getmail();
+  }, []);
+
+  var id = params;
+  console.log(id);
+
+  const getmail = async () => {
+    console.log(id);
+    var maildata = await axios
+      .post("http://localhost:8001/singlemail", id)
+      .then((res) => {
+        return res.data;
+      });
+    setsetsinglemail(maildata);
+  };
+  var result = Object.entries(setsinglemail);
+
   return (
     <>
       <Header />
@@ -149,27 +172,27 @@ const Mailcontent = () => {
               <h4>Promotions</h4>
             </div>
           </div>
-          <div className="mailcontent__heading">
-            <div>
-              <h1>The mail heading</h1>
+          {/* {result.map((item, index) => (
+            <div key={index}>
+              <div className="mailcontent__heading">
+                <div>
+                  <h1>{item.subject}</h1>
+                </div>
+                <div className="mailcontent__heading1">
+                  <span className="material__icons">
+                    <PrintIcon />
+                  </span>
+                  <span className="material__icons">
+                    <ScreenShareIcon />
+                  </span>
+                </div>
+              </div>
+              <div className="body__box">
+                <p>{item.message}</p>
+              </div>
             </div>
-            <div className="mailcontent__heading1">
-              <span className="material__icons">
-                <PrintIcon />
-              </span>
-              <span className="material__icons">
-                <ScreenShareIcon />
-              </span>
-            </div>
-          </div>
-          <div className="body__box">
-            <p>
-              lorem bafinciwanviuasiucoxnojznijvnwdon oancjwojsawc
-              njs0iajcdojwsocn vsonvodowsnfocw0snfcf osnonnconsadnc w
-              wsnnvcwsnkc cnosoclwnsklf lkas csnocwsnofls sc0sjconwsonfck
-              nosfocolwsfck sicou osndfonwoncs nosoidncownaonf
-            </p>
-          </div>
+          ))} */}
+
           <div className="footer__button">
             <div className="reply__button">
               <span className="material__icons">

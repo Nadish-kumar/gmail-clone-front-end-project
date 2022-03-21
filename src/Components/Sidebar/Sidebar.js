@@ -25,6 +25,8 @@ import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
+import { useEffect } from "react";
 import {
   CModal,
   CModalFooter,
@@ -47,18 +49,65 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar = () => {
   const [visible, setVisible] = useState(false);
-  const classes = useStyles();
+  const [to, setto] = useState("");
+  const [mail, setmail] = useState([]);
+  const [subject, setsubject] = useState("");
+  const [message, setmessage] = useState("");
 
-  const formik = useFormik({
-    initialValues: {
-      to: "",
-      subject: "",
-      message: "",
-    },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
+  useEffect(() => {
+    getmail();
+  }, []);
+
+  const classes = useStyles();
+  var currentdate = new Date();
+  var date =
+    currentdate.getDate() +
+    "/" +
+    (currentdate.getMonth() + 1) +
+    "/" +
+    currentdate.getFullYear();
+
+  var mailid = Math.floor(Math.random() * 1000000000 + 1);
+
+  var from = localStorage.getItem("from");
+  var username = localStorage.getItem("username");
+
+  var data = {
+    from: from,
+    to: to,
+    username: username,
+    subject: subject,
+    message: message,
+    date: date,
+    mailid: mailid,
+  };
+
+  const sendmail = async () => {
+    console.log(data);
+    var response = await axios
+      .post("http://localhost:8001/sauce", data)
+      .then((res) => {
+        return alert("data send", res.data);
+      });
+  };
+
+  const getmail = async () => {
+    var id = localStorage.getItem("from");
+    var toid = {
+      from: id,
+    };
+    console.log(toid);
+    var data = await axios
+      .post("http://localhost:8001/mail", toid)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setmail(data);
+  };
+  console.log(mail);
 
   return (
     <>
@@ -85,25 +134,19 @@ const Sidebar = () => {
                 <CModalTitle>New message</CModalTitle>
               </CModalHeader>
               <CModalBody>
-                <form
-                  className={classes.root}
-                  noValidate
-                  autoComplete="off"
-                  onSubmit={formik.handleSubmit}
-                >
+                <form className={classes.root} noValidate autoComplete="off">
                   <TextField
-                    id="standard-basic"
+                    id="firstname"
                     label="Recipients"
-                    onChange={formik.handleChange}
-                    value={formik.values.firstName}
-                    name="to"
+                    name="firstname"
+                    value={to}
+                    onChange={(e) => setto(e.target.value)}
                   />
                   <TextField
                     id="standard-basic"
                     label="Subject"
-                    onChange={formik.handleChange}
-                    value={formik.values.firstName}
-                    name="subject"
+                    value={subject}
+                    onChange={(e) => setsubject(e.target.value)}
                   />
 
                   <TextField
@@ -111,18 +154,14 @@ const Sidebar = () => {
                     label="Multiline Placeholder"
                     placeholder="Placeholder"
                     multiline
-                    onChange={formik.handleChange}
-                    value={formik.values.firstName}
-                    name="message"
+                    value={message}
+                    onChange={(e) => setmessage(e.target.value)}
                   />
                   <CModalFooter>
-                    <CButton
-                      color="secondary"
-                      onClick={() => setVisible(false)}
-                    >
+                    <CButton color="secondary" onClick={() => setVisible(true)}>
                       Close
                     </CButton>
-                    <CButton color="primary" type="submit">
+                    <CButton color="primary" type="submit" onClick={sendmail}>
                       Send
                     </CButton>
                   </CModalFooter>
@@ -243,28 +282,33 @@ const Sidebar = () => {
               <h4>Promotions</h4>
             </div>
           </div>
-          <Link to="mailcontent">
-            <div className="emaillist__list">
-              <div className="emailrow">
-                <div className="emailrow__option">
-                  <input type="checkbox" />
-                  <span className="material__icons">
-                    <StarBorderIcon />
-                  </span>
-                  <span className="material__icons">
-                    <ToggleOffIcon />
-                  </span>
-                </div>
-                <h3 className="emailrow__title">nadish</h3>
+          {mail.map((item, index) => (
+            <Link
+              to={`/mailcontent/${item.mailid}`}
+              style={{ color: "black", textDecoration: "none" }}
+            >
+              <div className="emaillist__list" key={index}>
+                <div className="emailrow">
+                  <div className="emailrow__option">
+                    <input type="checkbox" />
+                    <span className="material__icons">
+                      <StarBorderIcon />
+                    </span>
+                    <span className="material__icons">
+                      <ToggleOffIcon />
+                    </span>
+                  </div>
+                  <h3 className="emailrow__title">{item.username}</h3>
 
-                <div className="emailrow__message">
-                  <h4>your are very brillent</h4>
-                </div>
+                  <div className="emailrow__message">
+                    <h4>{item.subject}</h4>
+                  </div>
 
-                <p className="emailrow__time">10pm</p>
+                  <p className="emailrow__time">{item.date}</p>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          ))}
         </div>
       </div>
     </>
