@@ -9,8 +9,15 @@ import AppsIcon from "@material-ui/icons/Apps";
 import cto2 from "../../assest/img/cto2.png";
 import SearchIcon from "@material-ui/icons/Search";
 import { IconButton } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  var navigate = useNavigate();
+  const exitaccount = () => {
+    sessionStorage.clear();
+    navigate("/");
+  };
+
   return (
     <div className=" header">
       <div className="header__left">
@@ -35,7 +42,7 @@ const Header = () => {
         <span className="material__icons">
           <AppsIcon />
         </span>
-        <Avatar src={cto2} />
+        <Avatar src={cto2} onClick={exitaccount} />
       </div>
     </div>
   );

@@ -69,8 +69,8 @@ const Sidebar = () => {
 
   var mailid = Math.floor(Math.random() * 1000000000 + 1);
 
-  var from = localStorage.getItem("from");
-  var username = localStorage.getItem("username");
+  var from = sessionStorage.getItem("from");
+  var username = sessionStorage.getItem("username");
 
   var data = {
     from: from,
@@ -84,6 +84,7 @@ const Sidebar = () => {
 
   const sendmail = async () => {
     console.log(data);
+
     var response = await axios
       .post("http://localhost:8001/sauce", data)
       .then((res) => {
@@ -92,7 +93,7 @@ const Sidebar = () => {
   };
 
   const getmail = async () => {
-    var id = localStorage.getItem("from");
+    var id = sessionStorage.getItem("from");
     var toid = {
       from: id,
     };

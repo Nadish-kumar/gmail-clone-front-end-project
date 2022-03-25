@@ -49,7 +49,8 @@ const Mailcontent = () => {
       });
     setsetsinglemail(maildata);
   };
-  var result = Object.entries(setsinglemail);
+  var data = [setsinglemail]
+  console.log(data)
 
   return (
     <>
