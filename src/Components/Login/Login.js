@@ -20,7 +20,7 @@ const Login = () => {
       var data = await axios
         .post("https://gmail-clone-guvi.herokuapp.com/login", values)
         .then((res) => {
-          return navigate("/home");
+          return res.data 
         })
         .catch((err) => {
           return alert("Incorrect username and password");
@@ -38,7 +38,7 @@ const Login = () => {
       if (checkuser !== 0) {
         sessionStorage.setItem("from", checkuser[0].email);
         sessionStorage.setItem("username", checkuser[0].username);
-      
+        navigate("/home");
       } else {
         alert("Please register your account");
       }
