@@ -38,7 +38,7 @@ const Login = () => {
       if (checkuser !== 0) {
         sessionStorage.setItem("from", checkuser[0].email);
         sessionStorage.setItem("username", checkuser[0].username);
-        window.location.reload();
+      
       } else {
         alert("Please register your account");
       }
