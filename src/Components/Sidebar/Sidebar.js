@@ -54,8 +54,20 @@ const Sidebar = () => {
   const [subject, setsubject] = useState("");
   const [message, setmessage] = useState("");
 
-  useEffect(() => {
-    getmail();
+  useEffect( async() => {
+   
+      var id = sessionStorage.getItem("from");
+      var toid = {
+        from: id,
+      };
+    
+      var data = await axios
+        .post("https://gmail-clone-guvi.herokuapp.com/mail", toid)
+        .then((res) => {
+          return res.data;
+        })
+      setmail(data);
+    
   }, []);
 
   const classes = useStyles();
@@ -92,23 +104,8 @@ const Sidebar = () => {
       });
   };
 
-  const getmail = async () => {
-    var id = sessionStorage.getItem("from");
-    var toid = {
-      from: id,
-    };
-    console.log(toid);
-    var data = await axios
-      .post("https://gmail-clone-guvi.herokuapp.com/mail", toid)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setmail(data);
-  };
-  console.log(mail);
+
+
 
   return (
     <>
