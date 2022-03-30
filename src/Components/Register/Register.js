@@ -20,7 +20,7 @@ const Register = () => {
     },
     onSubmit: async (values) => {
       var data = await axios
-        .post("http://localhost:8001/register", values)
+        .post("https://gmail-clone-guvi.herokuapp.com/register", values)
         .then((res) => {
           return res.data;
         });

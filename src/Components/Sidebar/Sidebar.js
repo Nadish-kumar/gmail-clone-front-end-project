@@ -86,7 +86,7 @@ const Sidebar = () => {
     console.log(data);
 
     var response = await axios
-      .post("http://localhost:8001/sauce", data)
+      .post("https://gmail-clone-guvi.herokuapp.com/sauce", data)
       .then((res) => {
         return alert("data send", res.data);
       });
@@ -99,7 +99,7 @@ const Sidebar = () => {
     };
     console.log(toid);
     var data = await axios
-      .post("http://localhost:8001/mail", toid)
+      .post("https://gmail-clone-guvi.herokuapp.com/mail", toid)
       .then((res) => {
         return res.data;
       })

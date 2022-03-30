@@ -32,6 +32,7 @@ import axios from "axios";
 
 const Mailcontent = () => {
   const params = useParams();
+  var data = []
   const [setsinglemail, setsetsinglemail] = useState([]);
   useEffect(() => {
     getmail();
@@ -41,16 +42,20 @@ const Mailcontent = () => {
   console.log(id);
 
   const getmail = async () => {
+    var maildef = []
     console.log(id);
     var maildata = await axios
-      .post("http://localhost:8001/singlemail", id)
+      .post("https://gmail-clone-guvi.herokuapp.com/singlemail", id)
       .then((res) => {
         return res.data;
       });
-    setsetsinglemail(maildata);
+      maildef.push(maildata)
+      setsetsinglemail(maildef);
+  
   };
-  var data = [setsinglemail]
-  console.log(data)
+  console.log(setsinglemail)
+
+  
 
   return (
     <>
@@ -173,7 +178,7 @@ const Mailcontent = () => {
               <h4>Promotions</h4>
             </div>
           </div>
-          {/* {result.map((item, index) => (
+          {setsinglemail.map((item, index) => (
             <div key={index}>
               <div className="mailcontent__heading">
                 <div>
@@ -192,7 +197,7 @@ const Mailcontent = () => {
                 <p>{item.message}</p>
               </div>
             </div>
-          ))} */}
+          ))}
 
           <div className="footer__button">
             <div className="reply__button">

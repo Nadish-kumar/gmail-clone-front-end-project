@@ -18,7 +18,7 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       var data = await axios
-        .post("http://localhost:8001/login", values)
+        .post("https://gmail-clone-guvi.herokuapp.com/login", values)
         .then((res) => {
           return navigate("/home");
         })
@@ -27,7 +27,7 @@ const Login = () => {
         });
 
       var userdata = await axios
-        .get("http://localhost:8001/viewall")
+        .get("https://gmail-clone-guvi.herokuapp.com/viewall")
         .then((res) => {
           return res.data;
         });
