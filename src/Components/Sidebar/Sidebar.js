@@ -84,23 +84,25 @@ const Sidebar = () => {
   var from = sessionStorage.getItem("from");
   var username = sessionStorage.getItem("username");
 
-  var data = {
-    from: from,
-    to: to,
-    username: username,
-    subject: subject,
-    message: message,
-    date: date,
-    mailid: mailid,
-  };
+
 
   const sendmail = async () => {
+
+    var data = {
+      from: from,
+      to: to,
+      username: username,
+      subject: subject,
+      message: message,
+      date: date,
+      mailid: mailid,
+    };
     console.log(data);
 
     var response = await axios
       .post("https://gmail-clone-guvi.herokuapp.com/sauce", data)
       .then((res) => {
-        return alert("data send", res.data);
+        return alert("mail send");
       });
   };
 
