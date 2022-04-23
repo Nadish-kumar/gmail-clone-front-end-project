@@ -58,7 +58,7 @@ const Sidebar = () => {
    
       var id = sessionStorage.getItem("from");
       var toid = {
-        from: id,
+        to: id,
       };
     
       var data = await axios
@@ -71,39 +71,43 @@ const Sidebar = () => {
   }, []);
 
   const classes = useStyles();
-  var currentdate = new Date();
-  var date =
-    currentdate.getDate() +
-    "/" +
-    (currentdate.getMonth() + 1) +
-    "/" +
-    currentdate.getFullYear();
-
-  var mailid = Math.floor(Math.random() * 1000000000 + 1);
-
-  var from = sessionStorage.getItem("from");
-  var username = sessionStorage.getItem("username");
 
 
 
-  const sendmail = async () => {
 
+  const gotomail = async () => {
+    var currentdate = new Date();
+    var date =
+      currentdate.getDate() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear();
+  
+    var mailid = Math.floor(Math.random() * 1000000000 + 1);
+  
+    var from = sessionStorage.getItem("from");
+    var username = sessionStorage.getItem("username");
+
+    var to = document.getElementById("to").value
+    var subject = document.getElementById("subject").value
+    var message = document.getElementById("message").value
     var data = {
-      from: from,
+     
       to: to,
-      username: username,
       subject: subject,
       message: message,
       date: date,
       mailid: mailid,
+      from: from,
+      username: username,
     };
-    console.log(data);
+
 
     var response = await axios
-      .post("https://gmail-clone-guvi.herokuapp.com/sauce", data)
-      .then((res) => {
-        return alert("mail send");
-      });
+      .post("https://gmail-clone-guvi.herokuapp.com/sauce", data).then((res) => {return res.data});
+      setVisible(false)
+      alert("Your mail is send ...")
   };
 
 
@@ -136,32 +140,29 @@ const Sidebar = () => {
               <CModalBody>
                 <form className={classes.root} noValidate autoComplete="off">
                   <TextField
-                    id="firstname"
+                    id="to"
                     label="Recipients"
                     name="firstname"
-                    value={to}
-                    onChange={(e) => setto(e.target.value)}
+    
                   />
                   <TextField
-                    id="standard-basic"
+                    id="subject"
                     label="Subject"
-                    value={subject}
-                    onChange={(e) => setsubject(e.target.value)}
+                
                   />
 
                   <TextField
-                    id="standard-textarea"
+                    id="message"
                     label="Multiline Placeholder"
                     placeholder="Placeholder"
                     multiline
-                    value={message}
-                    onChange={(e) => setmessage(e.target.value)}
+              
                   />
                   <CModalFooter>
-                    <CButton color="secondary" onClick={() => setVisible(true)}>
+                    <CButton color="secondary" onClick={() => setVisible(false)}>
                       Close
                     </CButton>
-                    <CButton color="primary" type="submit" onClick={sendmail}>
+                    <CButton color="primary" onClick={gotomail}>
                       Send
                     </CButton>
                   </CModalFooter>

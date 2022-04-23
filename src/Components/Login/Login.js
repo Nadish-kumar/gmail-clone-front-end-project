@@ -19,14 +19,8 @@ const Login = () => {
     onSubmit: async (values) => {
       var data = await axios
         .post("https://gmail-clone-guvi.herokuapp.com/login", values)
-        .then((res) => {
-          return res.data 
-        })
-        .catch((err) => {
-          return alert("Incorrect username and password");
-        });
-
-      var userdata = await axios
+        .then( async(res) => {
+          var userdata = await axios
         .get("https://gmail-clone-guvi.herokuapp.com/viewall")
         .then((res) => {
           return res.data;
@@ -42,10 +36,14 @@ const Login = () => {
       } else {
         alert("Please register your account");
       }
+        })
+        .catch((err) => {
+          return alert("Incorrect username and password");
+        });
 
-      console.log(userdata);
-      console.log(checkuser);
-      console.log(data);
+      
+
+
     },
   });
 
